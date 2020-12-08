@@ -8,6 +8,8 @@
       v-on:changeeven="changeevenn"
       v-on:addfilter="addfilter"
       v-on:FilterData="FilterData"
+      v-on:SearchData="SearchData"
+      v-on:SortDL="SortDL"
       v-on:removeline="removeline"
       v-on:Cancel_AddFilter="Cancel_AddFilter"
       v-on:Confirm_AddFilter="Confirm_AddFilter"
@@ -35,7 +37,6 @@ import containers from './components/containers.vue'
 import modal from './components/modal.vue'
 import modalLocDL from './components/ModelLocDL.vue'
 export default {
-
   name: 'App',
   components: {
     containers,
@@ -45,6 +46,7 @@ export default {
   data () {
     return {
       isModalVisible: false,
+      changeSearch: '',
       index_edit: '',
       title: 'giang',
       create_confirm_boolean: '',
@@ -58,12 +60,13 @@ export default {
       checkFilterData: 's',
       formtam: [],
       E: {},
+      checkType_Sort: '',
 
       form: [
         // Temlate: this.Temlate,Type: this.Type, Company: this.Company,VersionDate: this.VersionDate, ExpirationDate: this.ExpirationDate, Active: this.Active
         {
-          idfrom: '1111',
-          Temlate: '133145-AFM-B6-TV-RADIOCOMMERCIALS-11-15 ',
+          idfrom: '1115',
+          Temlate: 'bahaha hihhi ',
           Type: 'Production',
           Company: 'Peptico',
           VersionDate: '17-12-2020',
@@ -73,22 +76,22 @@ export default {
           node2: 'Edit'
         },
         {
-          idfrom: '1112',
-          Temlate: '13325243-AFM-B6-TV-RADIOCOMMERCIALS-11-15',
+          idfrom: '1113',
+          Temlate: 'a3325243-AFM-B6-TV-RADIOCOMMERCIALS-11-15',
           Type: 'Production',
           Company: 'Haitico',
           VersionDate: '20-11-2020',
           ExpirationDate: '20-11-2020',
-          Active: 'Active',
+          Active: 'Archive',
           node1: 'Remove',
           node2: 'Edit'
         },
         {
-          idfrom: '1113',
-          Temlate: '133352435-AFM-B6-TV-RADIOCOMMERCIALS-11-15',
+          idfrom: '1111',
+          Temlate: 'huhuhahahahaahahahaah',
           Type: 'Payoll',
           Company: 'Haitico',
-          VersionDate: '20-11-2020',
+          VersionDate: '25-12-2020',
           ExpirationDate: '20-11-2020',
           Active: 'Active',
           node1: 'Remove',
@@ -96,7 +99,7 @@ export default {
         },
         {
           idfrom: '1114',
-          Temlate: '1324-AFM-B6-TV-RADIOCOMMERCIALS-11-15',
+          Temlate: 'c324-AFM-B6-TV-RADIOCOMMERCIALS-11-15',
           Type: 'Production',
           Company: 'Peptico',
           VersionDate: '20-11-2020',
@@ -106,13 +109,13 @@ export default {
           node2: 'Edit'
         },
         {
-          idfrom: '1115',
-          Temlate: '1335-AFM-B6-TV-RADIOCOMMERCIALS-11-15',
+          idfrom: '1112',
+          Temlate: '1999-AFM-B6-TV-RADIOCOMMERCIALS-11-15',
           Type: 'Payoll',
           Company: 'Peptico',
-          VersionDate: '20-11-2020',
+          VersionDate: '22-12-2020',
           ExpirationDate: '20-11-2020',
-          Active: 'Active',
+          Active: 'Archive',
           node1: 'Remove',
           node2: 'Edit'
         }
@@ -126,10 +129,6 @@ export default {
   },
   computed: {// khi có data nào bên trong hàm thay đổi thì sẻ gọi gàm computed thực thi trả về cho computed
 
-    // reversedMessage: function () {
-    //   // `this` points to the vm instance
-    //   return this.Temlate + 'abc'
-    // }
   },
 
   watch: {
@@ -143,7 +142,7 @@ export default {
         for (let i = this.formtam.length - 1; i >= 0; i--) {
           if (this.formtam[i].Temlate.includes(this.E.Temlate)) {
           } else {
-            alert(this.formtam[i].Type + this.formtam[i].VersionDate)
+            // alert(this.formtam[i].Temlate + this.formtam[i].VersionDate)
             this.formtam.splice(i, 1)
           }
         }
@@ -165,6 +164,8 @@ export default {
             this.formtam.splice(i, 1)
           }
         }
+        if (this.E.VersionDate !== '' && this.E.VersionDate[4] === '-') { this.E.VersionDate = this.convertDate(this.E.VersionDate, '-', 'yyyy_mm_dd') }
+        alert(this.E.VersionDate)
         for (let i = this.formtam.length - 1; i >= 0; i--) {
           if (this.formtam[i].VersionDate.includes(this.E.VersionDate)) {
           } else {
@@ -173,75 +174,31 @@ export default {
         }
       } else {
       }
-      // alert(this.formtam)
-      // if (this.formtam.length === 0) {
-      //   for (let i = 0; i <= this.form.length - 1; i++) {
-      //     this.formtam.push(this.form[i])
-      //   }
-      // }
-      // alert(this.formtam)
-      // if (this.E.checkall === 'loc') {
-      //   if (this.formtam.length !== 0) {
-      //     this.form = []
-      //     for (let i = 0; i <= this.formtam.length - 1; i++) {
-      //       this.form.push(this.formtam[i])
-      //     }
-      //     for (let i = this.form.length - 1; i >= 0; i--) {
-      //       if (this.form[i].Temlate.includes(this.E.Temlate)) {
-      //       } else {
-      //         this.form.splice(i, 1)
-      //       }
-      //     }
-      //   }
-      // } else {
-      //   this.form = []
-      //   for (let i = 0; i <= this.formtam.length - 1; i++) {
-      //     this.form.push(this.formtam[i])
-      //   }
-      // }
       this.checkFilterData = ''
+    },
+    changeSearch () {
+      this.formtam = []
+      for (let i = 0; i <= this.form.length - 1; i++) {
+        this.formtam.push(this.form[i])
+      }
+
+      for (let i = this.formtam.length - 1; i >= 0; i--) {
+        if (this.formtam[i].Temlate.includes(this.changeSearch)) {
+        } else {
+          this.formtam.splice(i, 1)
+        }
+      }
     }
-
   },
-  // ahihih test github
-  methods: {
-    // ChangeForm: function (form, formChange) {
-    //   let Tem = []
-    //   Tem = form
-    //   form = formChange
-    //   formChange = Tem
-    // },
 
+  methods: {
     check: function (formchange, string) {
       if (formchange.includes(string)) { return false } else return true
     },
     Confirm_Filter (e) {
       this.E = e
       this.checkFilterData = 'ahiis'
-      // if (e.checkall === 'loc') {
-      //   if (this.formtam.length !== 0) {
-      //     this.form = []
-      //     for (let i = 0; i <= this.formtam.length - 1; i++) {
-      //       this.form.push(this.formtam[i])
-      //     }
-      //     this.formtam = []
-      //   }
-      //   this.checkFilterData = 'ahiis'
-      // } else {
-      //   if (this.formtam.length !== 0) { this.form = this.formtam }
-      // }
-      // this.Temlate = 'fds'
-      // let formChange = this.form
       this.isModalVisible = e.isModalVisible
-      // // alert(this.formChange[0].Temlate)
-      // if (e.Temlate !== '') {
-      //   for (let i = formChange.length - 1; i >= 0; i--) {
-      //     if (this.check(formChange[i].Temlate, e.Temlate)) {
-      //       formChange.splice(i, 1)
-      //     }
-      //   }
-      //   alert(formChange.length())
-      // }
     },
     showModal () {
       this.isModalVisible = true
@@ -363,7 +320,78 @@ export default {
         this.formtam.push(this.form[i])
       }
     },
-
+    SearchData (e) {
+      this.changeSearch = e
+    },
+    SortDL (e) {
+      this.formtam = []
+      for (let i = 0; i <= this.form.length - 1; i++) {
+        this.formtam.push(this.form[i])
+      }
+      switch (e.haha) {
+        case 'Form ID#': for (let i = 0; i < this.formtam.length - 1; i++) { // buble sort
+          for (let j = this.formtam.length - 1; j > 0; j--) {
+            if (this.formtam[j].idfrom < this.formtam[ j - 1 ].idfrom) {
+              let tam = {}
+              tam = this.formtam[j]
+              this.formtam[j] = this.formtam[ j - 1 ]
+              this.formtam[ j - 1 ] = tam
+            }
+          }
+        }
+          break
+        case 'Type':
+          this.formtam.sort(function (a, b) {
+            let titleA = a.Type.toLowerCase()
+            let titleB = b.Type.toLowerCase()
+            if (titleA < titleB) return -1
+            if (titleA > titleB) return 1
+            return 0
+          })
+          break
+        case 'TemPlate Name':
+          this.formtam.sort(function (a, b) {
+            let titleA = a.Temlate.toLowerCase()
+            let titleB = b.Temlate.toLowerCase()
+            if (titleA < titleB) return -1
+            if (titleA > titleB) return 1
+            return 0
+          })
+          break
+        case 'Company':
+          this.formtam.sort(function (a, b) {
+            let titleA = a.Company.toLowerCase()
+            let titleB = b.Company.toLowerCase()
+            if (titleA < titleB) return -1
+            if (titleA > titleB) return 1
+            return 0
+          })
+          break
+        case 'ACTIVE':
+          this.formtam.sort(function (a, b) {
+            let titleA = a.Active.toLowerCase()
+            let titleB = b.Active.toLowerCase()
+            if (titleA < titleB) return -1
+            if (titleA > titleB) return 1
+            return 0
+          })
+          break
+        case 'Version Date':
+          this.formtam.sort(function (a, b) {
+            a = a.VersionDate.toString().split('-')
+            b = b.VersionDate.toString().split('-')
+            return a[2] - b[2] || a[1] - b[1] || a[0] - b[0]
+          })
+          break
+        case 'Expiration D':
+          this.formtam.sort(function (a, b) {
+            a = a.ExpirationDate.toString().split('-')
+            b = b.ExpirationDate.toString().split('-')
+            return a[2] - b[2] || a[1] - b[1] || a[0] - b[0]
+          })
+          break
+      }
+    },
     removeline (e) {
       this.evenremove = e
       this.formtam = []
@@ -463,7 +491,6 @@ export default {
       let i = 0
       let index = 0
       let check = true
-
       for (i = 0; i < this.form.length; i++) {
         if (String(e.idfrom) === String(this.form[i].idfrom)) { // cùng dữ liệu nếu không sẻ bị lỗi
           index = i

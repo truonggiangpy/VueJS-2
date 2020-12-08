@@ -7,6 +7,8 @@
       v-on:changeeven="changeevenn"
       v-on:addfilter="addfilter"
       v-on:FilterData="FilterData"
+      v-on:SearchData="SearchData"
+      v-on:SortDL="SortDL"
       v-on:removeline="removeline"
       v-on:Cancel_AddFilter="Cancel_AddFilter"
       v-on:Confirm_AddFilter="Confirm_AddFilter"
@@ -39,6 +41,9 @@ export default {
     CompRight
   },
   methods: {
+    SortDL (e) {
+      this.$emit('SortDL', e)
+    },
     changeevenn (e) {
       this.$emit('changeeven', e)
       // this.$emit('changeeven',e)
@@ -48,6 +53,9 @@ export default {
     },
     FilterData (e) {
       this.$emit('FilterData', e)
+    },
+    SearchData (e) {
+      this.$emit('SearchData', e)
     },
     removeline (e) {
       this.$emit('removeline', e)

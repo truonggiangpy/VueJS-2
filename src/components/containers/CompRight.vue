@@ -5,6 +5,8 @@
       v-on:addfilter="addfilter"
       v-on:changeeven="changeevenn"
       v-on:FilterData="FilterData"
+      v-on:SearchData="SearchData"
+
     />
     <CompTable
        v-bind:index_edit="index_edit"
@@ -13,6 +15,7 @@
       v-on:Cancel_AddFilter="Cancel_AddFilter"
       v-on:Confirm_AddFilter="Confirm_AddFilter"
       v-on:Editline="Editline"
+      v-on:SortDL="SortDL"
       v-on:Edit="Edit"
       v-on:Confirm_Edit="Confirm_Edit"
       v-on:Cancel_Edit_row="Cancel_Edit_row"
@@ -40,8 +43,15 @@ export default {
     CompTable
   },
   methods: {
+
     FilterData (e) {
       this.$emit('FilterData', e)
+    },
+    SearchData (e) {
+      this.$emit('SearchData', e)
+    },
+    SortDL (e) {
+      this.$emit('SortDL', e)
     },
     changeevenn (e) {
       this.$emit('changeeven', e)
